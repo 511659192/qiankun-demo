@@ -1,0 +1,14 @@
+# 依赖与构建产物
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# 编辑器
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# 系统与日志
+.DS_Store
+*.log

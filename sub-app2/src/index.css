@@ -1,0 +1,28 @@
+/*
+ * 主题挂在应用根元素 .micro-app 上,而不是 body:
+ * 被 qiankun 加载时配合 styleIsolation,这些规则只会作用于自己的容器,不会污染宿主或另一个微应用。
+ */
+.micro-app {
+  box-sizing: border-box;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: #fffbeb;
+  color: #78350f;
+}
+
+.micro-app *,
+.micro-app *::before,
+.micro-app *::after {
+  box-sizing: border-box;
+}
+
+/*
+ * 独立运行时 body 才属于本应用;被 qiankun 加载时 body 是宿主的。
+ * main.tsx 只在独立运行分支给 body 打上这个标记,所以这条规则在宿主里永远不会命中。
+ */
+body.micro-app-standalone {
+  margin: 0;
+  min-height: 100vh;
+  background: #fffbeb;
+  color: #78350f;
+}

@@ -1,0 +1,194 @@
+.shell {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+.shell-header h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.shell-header p {
+  margin: 0 0 24px;
+  color: #6b7280;
+}
+
+.shell-header code {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #e5e7eb;
+  font-size: 13px;
+}
+
+.tag {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* 交互日志:宿主侧的中转面板,消息只在宿主里存一份 */
+.stage {
+  margin-bottom: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.stage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fafafa;
+}
+
+.stage-header h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.stage-header button {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #e5e7eb;
+  color: #374151;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.stage-header button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.stage-empty {
+  margin: 0;
+  padding: 16px 20px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.stage-log {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 220px;
+  margin: 0;
+  padding: 14px 20px 18px;
+  overflow: auto;
+  list-style: none;
+}
+
+.stage-log li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.stage-route {
+  flex: none;
+  color: #2563eb;
+  font-family: monospace;
+}
+
+.stage-text {
+  flex: 1;
+  color: #111827;
+  word-break: break-word;
+}
+
+.stage-at {
+  flex: none;
+  color: #9ca3af;
+  font-family: monospace;
+}
+
+/* 多个微应用面板纵向排列 */
+.micro-app-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sub-app-section {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.sub-app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fafafa;
+}
+
+.sub-app-header h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.sub-app-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sub-app-controls button {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.sub-app-description {
+  margin: 0;
+  padding: 12px 20px 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* 微应用容器:className 会落到 <MicroApp> 内部的容器 div 上,保留最小高度方便观察挂载/卸载 */
+.sub-app-container {
+  min-height: 120px;
+}
+
+/* 未加载时的占位(<MicroApp> 未渲染) */
+.sub-app-placeholder {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0 20px;
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+/* 加载中 / 加载失败由 <MicroApp> 的 loader、errorBoundary 两个 slot 渲染 */
+.sub-app-loader {
+  margin: 0;
+  padding: 8px 20px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.sub-app-error {
+  margin: 0;
+  padding: 8px 20px;
+  color: #dc2626;
+  font-size: 13px;
+}

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "qiankun": {
+      "source": "umijs/qiankun",
+      "sourceType": "github",
+      "skillPath": "skills/qiankun/SKILL.md",
+      "computedHash": "81e3bde568d1faa79d5d2cb0376e5036bb517a4141819f76e121244cccc185db"
+    }
+  }
+}
