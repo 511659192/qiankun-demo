@@ -86,6 +86,67 @@ if (window.__POWERED_BY_QIANKUN__) {
 }
 ```
 
+### Forward host props (React)
+
+The `update` in the template above is a no-op because the baseline app consumes no host data. To receive extra props from `<MicroApp>` / `loadMicroApp({ props })` without remounting, create the React root once and re-render it with the latest props:
+
+```tsx
+type QiankunProps = { container?: Element; setLoading?: (loading: boolean) => void } & Record<string, unknown>;
+
+let hostProps: Record<string, unknown> = {};
+let root: ReactDOM.Root | undefined;
+
+function render(props: QiankunProps = {}) {
+  const container = props.container?.querySelector('#root') ?? document.getElementById('root');
+  if (!container) return;
+  if (!root) root = ReactDOM.createRoot(container); // create once — recreating it on update remounts the app
+  root.render(
+    <React.StrictMode>
+      <App {...hostProps} />
+    </React.StrictMode>,
+  );
+}
+
+export async function mount(props: QiankunProps) {
+  hostProps = props;
+  render(props);
+}
+
+export async function update(props: QiankunProps) {
+  hostProps = { ...hostProps, ...props }; // the binding always sends the full extra-props object
+  render();
+}
+
+export async function unmount() {
+  root?.unmount();
+  root = undefined;
+  hostProps = {}; // don't leak the previous instance's props into the next mount
+}
+```
+
+The Vue template above already follows this shape. `setLoading` is injected by the `MicroApp` binding into `update` props; ignore it if unused.
+
+### Theme the app without touching `body`
+
+Micro app CSS is injected into the host document, so a `body { … }` rule leaks into the host page: the micro app overrides the host's `body` styles, and with several micro apps mounted the last-mounted one wins. Put the theme on the app's root element, and mark `body` only for standalone runs:
+
+```css
+/* index.css */
+.micro-app { box-sizing: border-box; background: #eefaf3; color: #064e3b; font-family: …; }
+.micro-app *, .micro-app *::before, .micro-app *::after { box-sizing: border-box; }
+
+/* only matches when main.tsx added the marker below — never while running under qiankun */
+body.micro-app-standalone { margin: 0; min-height: 100vh; background: #eefaf3; color: #064e3b; }
+```
+
+```tsx
+// main.tsx, the standalone branch of the entry
+} else {
+  document.body.classList.add('micro-app-standalone');
+  render();
+}
+```
+
 ## Vue entry template (`src/main.ts`)
 
 ```ts
@@ -141,3 +202,5 @@ if (window.__POWERED_BY_QIANKUN__) {
 
 1. `pnpm dev` in the sub app, open `http://localhost:7101` — it must render on its own (the non-qiankun branch of the entry).
 2. If a main app exists, run it too and confirm the sub app mounts inside it with no console errors — see the verification checklist in [create-main-app.md](create-main-app.md).
+3. In the host, verify styles stayed scoped: the app's theme resolves from its own container rules, and the host's `body` background is unchanged.
+4. If the app consumes host props: keep some local state (type into an input), trigger a prop update from the host, and confirm the state survived — that proves `update` re-rendered instead of remounting.
